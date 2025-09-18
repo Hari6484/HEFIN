@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  bridge:
+    build: ./backend-node
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/hefin
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
